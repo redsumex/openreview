@@ -11,10 +11,12 @@
   --border-strong: #bfcdc7;
   --dark: #0f1f1c;
   --dark-soft: #18302b;
-  --mint: #5eead4;
-  --green: #0f766e;
-  --green-deep: #0b5e57;
-  --lime: #bef264;
+  --mint: #f87171;
+  --green: #b91c1c;
+  --green-deep: #7f1d1d;
+  --lime: #fecaca;
+  --positive: #0f766e;
+  --positive-soft: #dff7ef;
   --amber: #b45309;
   --amber-soft: #fef3c7;
   --rose: #be123c;
@@ -435,9 +437,9 @@ p {
   align-items: center;
   gap: 5px;
   padding: 4px 7px;
-  border: 1px solid #b7e7dc;
+  border: 1px solid #fecaca;
   border-radius: 99px;
-  background: #edfdf9;
+  background: #fef2f2;
   color: var(--green);
   font-family: var(--font-mono);
   font-size: 8px;
@@ -747,7 +749,7 @@ p {
 }
 
 .text-good {
-  color: var(--green) !important;
+  color: var(--positive) !important;
 }
 
 .evidence-note {
@@ -1318,8 +1320,8 @@ p {
 }
 
 .status-approved {
-  background: #dff7ef;
-  color: var(--green);
+  background: var(--positive-soft);
+  color: var(--positive);
 }
 
 .risk-high {
@@ -1333,8 +1335,8 @@ p {
 }
 
 .risk-low {
-  background: #dff7ef;
-  color: var(--green);
+  background: var(--positive-soft);
+  color: var(--positive);
 }
 
 .review-title {
@@ -1408,11 +1410,11 @@ p {
 }
 
 .checks-passing {
-  color: var(--green);
+  color: var(--positive);
 }
 
 .checks-passing::before {
-  background: var(--green);
+  background: var(--positive);
 }
 
 .checks-failing {

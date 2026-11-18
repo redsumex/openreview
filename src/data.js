@@ -1,7 +1,7 @@
 export const reviews = [
   {
     id: 'or-208',
-    repo: 'redsumex/creditster',
+    repo: 'redsumex/atlas',
     number: 208,
     title: 'Guard campaign spend before launch',
     author: 'mira.builds',
@@ -26,7 +26,7 @@ export const reviews = [
   },
   {
     id: 'or-207',
-    repo: 'redsumex/creditster',
+    repo: 'redsumex/openreview',
     number: 207,
     title: 'Make mobile review controls reachable',
     author: 'northstar-labs',
@@ -97,7 +97,7 @@ export const reviews = [
   },
   {
     id: 'or-204',
-    repo: 'redsumex/creditster',
+    repo: 'redsumex/openreview',
     number: 204,
     title: 'Clarify the promotion-credit model',
     author: 'kepler-studio',
@@ -145,8 +145,8 @@ export const reviews = [
 ];
 
 export const activitySeed = [
-  { type: 'approved', actor: 'mira.builds', target: 'creditster#204', time: '8 min ago' },
-  { type: 'changes-requested', actor: 'northstar-labs', target: 'creditster#208', time: '21 min ago' },
+  { type: 'approved', actor: 'mira.builds', target: 'openreview#204', time: '8 min ago' },
+  { type: 'changes-requested', actor: 'northstar-labs', target: 'atlas#208', time: '21 min ago' },
   { type: 'comment', actor: 'sable-lang', target: 'openreview#206', time: '44 min ago' },
 ];
 

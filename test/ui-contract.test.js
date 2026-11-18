@@ -9,7 +9,7 @@ test('uses the OpenReview mark in the favicon and page', () => {
   const page = read('../index.html');
 
   assert.match(mark, /aria-label="OpenReview mark"/);
-  assert.match(mark, /#5eead4/);
+  assert.match(mark, /#f87171/);
   assert.match(page, /OpenReview - Code review/);
   assert.doesNotMatch(page, /Creditster/);
 });
