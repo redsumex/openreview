@@ -1,16 +1,16 @@
 :root {
-  --ink: #13211e;
-  --ink-soft: #2c3b36;
-  --muted: #64736d;
-  --muted-soft: #87938f;
-  --paper: #f5f7f4;
-  --surface: #ffffff;
-  --surface-soft: #f0f4f1;
-  --surface-tint: #e9f1ed;
-  --border: #d9e2dd;
-  --border-strong: #bfcdc7;
-  --dark: #0f1f1c;
-  --dark-soft: #18302b;
+  --ink: #2b1215;
+  --ink-soft: #4c2529;
+  --muted: #7d5a5f;
+  --muted-soft: #a17b80;
+  --paper: #fbf4f4;
+  --surface: #fffafa;
+  --surface-soft: #f8ecec;
+  --surface-tint: #f4dddd;
+  --border: #ecd2d3;
+  --border-strong: #d8b1b3;
+  --dark: #4a0d18;
+  --dark-soft: #681522;
   --mint: #f87171;
   --green: #b91c1c;
   --green-deep: #7f1d1d;
@@ -26,7 +26,7 @@
   --radius-sm: 6px;
   --radius-md: 10px;
   --radius-lg: 16px;
-  --shadow: 0 18px 50px rgba(15, 31, 28, 0.08);
+  --shadow: 0 18px 50px rgba(74, 13, 24, 0.1);
   --font-display: "Trebuchet MS", "Segoe UI", sans-serif;
   --font-body: "Segoe UI", -apple-system, BlinkMacSystemFont, sans-serif;
   --font-mono: "Cascadia Code", "SFMono-Regular", Consolas, monospace;
@@ -1835,22 +1835,22 @@ p {
 /* Dark theme */
 
 html[data-theme="dark"] {
-  --ink: #e7f1ec;
-  --ink-soft: #c7d8d1;
-  --muted: #93a79f;
-  --muted-soft: #72867f;
-  --paper: #0b1714;
-  --surface: #101f1b;
-  --surface-soft: #162923;
-  --surface-tint: #19332c;
-  --border: #28423a;
-  --border-strong: #3a5b51;
+  --ink: #fbecec;
+  --ink-soft: #e3c8ca;
+  --muted: #c49a9e;
+  --muted-soft: #a6777c;
+  --paper: #17090d;
+  --surface: #250d13;
+  --surface-soft: #32131a;
+  --surface-tint: #3b161e;
+  --border: #54262d;
+  --border-strong: #71363e;
   --shadow: 0 18px 50px rgba(0, 0, 0, 0.28);
 }
 
 html[data-theme="dark"] .public-topbar,
 html[data-theme="dark"] .app-sidebar {
-  background: #0a1512;
+  background: #2a0810;
 }
 
 html[data-theme="dark"] .public-footer,
@@ -1871,7 +1871,7 @@ html[data-theme="dark"] .review-dialog {
 html[data-theme="dark"] .step-card-accent,
 html[data-theme="dark"] .closing-cta,
 html[data-theme="dark"] .rail-card-rules {
-  background: #132b25;
+  background: #3a0d17;
 }
 
 html[data-theme="dark"] .queue-shape {
