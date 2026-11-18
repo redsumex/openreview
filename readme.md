@@ -49,6 +49,18 @@ npm run check
 npm test
 ```
 
+## Format workflow
+
+`npm run format` dispatches the GitHub `Format` workflow and watches the run:
+
+```powershell
+npm run format
+npm run format -- --ref feature/my-change
+npm run format -- --no-wait
+```
+
+The workflow currently validates source syntax and tests. It does not rewrite files. Keep local formatting fast and deterministic, and use this dispatcher to verify the remote gate.
+
 ## Important limits
 
 This is a front-end demo, not a production review service.
