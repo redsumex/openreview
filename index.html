@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="OpenReview is an open review queue for code that ships. Triage pull requests, inspect evidence, and leave a clear decision.">
+  <title>OpenReview - Code review that stays in the open</title>
+  <link rel="icon" href="assets/mark.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="public-view" class="public-view">
+    <header class="public-topbar">
+      <div class="shell topbar-inner">
+        <a class="brand" href="#top" aria-label="OpenReview home">
+          <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true">
+            <rect width="32" height="32" rx="9" fill="#0f1f1c"/>
+            <path d="m11 10-4 6 4 6M21 10l4 6-4 6" fill="none" stroke="#f4f7f5" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="m17.8 9.8 3.5 12.4" fill="none" stroke="#5eead4" stroke-width="2.4" stroke-linecap="round"/>
+          </svg>
+          <span class="brand-name">OpenReview</span>
+        </a>
+
+        <nav class="public-nav" id="public-nav" aria-label="Primary navigation">
+          <a href="#how-it-works">How it works</a>
+          <a href="#queue">Queue shape</a>
+          <a href="#principles">Principles</a>
+        </nav>
+
+        <div class="public-actions">
+          <button class="text-button" type="button" data-open-auth>Log in</button>
+          <button class="button button-dark" type="button" data-open-auth>Open demo queue</button>
+          <button class="icon-button public-menu-toggle" type="button" id="public-menu-toggle" aria-label="Open menu" aria-controls="public-nav" aria-expanded="false">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main id="top">
+      <section class="hero shell">
+        <div class="hero-copy">
+          <p class="eyebrow"><span class="eyebrow-dot"></span> The open review desk</p>
+          <h1>Code review that stays in the <em>open.</em></h1>
+          <p class="hero-lede">A calm queue for pull requests that need a human. See the evidence, leave a decision, and keep the next reviewer moving.</p>
+          <div class="hero-actions">
+            <button class="button button-primary" type="button" data-open-auth>Open the review queue <span aria-hidden="true">-></span></button>
+            <a class="button button-quiet" href="#how-it-works">See how it works</a>
+          </div>
+          <div class="hero-proof" aria-label="Demo queue summary">
+            <div><strong>06</strong><span>open reviews</span></div>
+            <div><strong>2m</strong><span>median triage</span></div>
+            <div><strong>100%</strong><span>decision coverage</span></div>
+          </div>
+        </div>
+
+        <div class="queue-preview" aria-label="Sample review queue">
+          <div class="preview-head">
+            <div>
+              <span class="preview-kicker">Review queue</span>
+              <strong>Needs your eyes</strong>
+            </div>
+            <span class="live-pill"><span></span> Live demo</span>
+          </div>
+          <div class="preview-row preview-row-high">
+            <span class="risk-dot"></span>
+            <div class="preview-main">
+              <strong>Guard campaign spend before launch</strong>
+              <span>redsumex/creditster <b>#208</b></span>
+            </div>
+            <span class="preview-age">12m</span>
+          </div>
+          <div class="preview-row preview-row-medium">
+            <span class="risk-dot"></span>
+            <div class="preview-main">
+              <strong>Make mobile review controls reachable</strong>
+              <span>redsumex/creditster <b>#207</b></span>
+            </div>
+            <span class="preview-age">38m</span>
+          </div>
+          <div class="preview-row preview-row-low">
+            <span class="risk-dot"></span>
+            <div class="preview-main">
+              <strong>Add review decision history</strong>
+              <span>redsumex/openreview <b>#206</b></span>
+            </div>
+            <span class="preview-age">1h</span>
+          </div>
+          <div class="preview-footer">
+            <span><i class="status-mark"></i> 5 need a reviewer</span>
+            <span class="preview-link">Open queue <span aria-hidden="true">-></span></span>
+          </div>
+        </div>
+      </section>
+
+      <section class="signal-strip">
+        <div class="shell signal-inner">
+          <span class="signal-label">A review should answer three things</span>
+          <div class="signal-items">
+            <span><b>01</b> What changed?</span>
+            <span><b>02</b> What could break?</span>
+            <span><b>03</b> What happens next?</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="shell section-block" id="how-it-works">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">A smaller review loop</p>
+            <h2>From queue to a clear decision.</h2>
+          </div>
+          <p>OpenReview keeps the request, the evidence, and the decision in one place. No mystery dashboards, no silent approvals.</p>
+        </div>
+        <div class="step-grid">
+          <article class="step-card">
+            <span class="step-number">01</span>
+            <h3>Open the queue</h3>
+            <p>Start with the reviews that need a human, sorted by risk and review size instead of arrival noise.</p>
+            <span class="step-foot">Triage by signal</span>
+          </article>
+          <article class="step-card step-card-accent">
+            <span class="step-number">02</span>
+            <h3>Inspect the evidence</h3>
+            <p>See the summary, changed files, CI state, and the exact questions a reviewer should answer before deciding.</p>
+            <span class="step-foot">Review with context</span>
+          </article>
+          <article class="step-card">
+            <span class="step-number">03</span>
+            <h3>Leave the decision</h3>
+            <p>Approve, request changes, or leave a note. The next person sees the decision, not a blank screen.</p>
+            <span class="step-foot">Close the loop</span>
+          </article>
+        </div>
+      </section>
+
+      <section class="shell section-block" id="queue">
+        <div class="queue-shape">
+          <div class="queue-shape-copy">
+            <p class="eyebrow">Queue shape</p>
+            <h2>Every request carries its own evidence.</h2>
+            <p>Risk, size, checks, and reviewer questions are visible before the first click. The queue is designed for decisions, not for collecting tabs.</p>
+            <button class="button button-primary" type="button" data-open-auth>Explore the demo queue</button>
+          </div>
+          <div class="evidence-card">
+            <div class="evidence-head"><span>Review snapshot</span><span class="evidence-id">#208</span></div>
+            <div class="evidence-body">
+              <div class="evidence-row"><span>Risk</span><strong class="text-high">High</strong></div>
+              <div class="evidence-row"><span>Scope</span><strong>6 files <small>+184 / -42</small></strong></div>
+              <div class="evidence-row"><span>Checks</span><strong class="text-good">Passing</strong></div>
+              <div class="evidence-row"><span>Question</span><strong>Does the API enforce the same budget guard?</strong></div>
+            </div>
+            <div class="evidence-note"><span class="status-mark"></span> One unresolved question before approval</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="shell section-block" id="principles">
+        <div class="principles">
+          <div>
+            <p class="eyebrow">The open standard</p>
+            <h2>Reviews people can actually follow.</h2>
+          </div>
+          <div class="principle-list">
+            <article><span>01</span><div><h3>Evidence before opinion</h3><p>Show the diff, checks, and open questions next to the decision.</p></div></article>
+            <article><span>02</span><div><h3>One request, one owner</h3><p>Every review has a clear person responsible for the next move.</p></div></article>
+            <article><span>03</span><div><h3>Decisions leave a trail</h3><p>A review is not done when the tab closes. It is done when the decision is visible.</p></div></article>
+          </div>
+        </div>
+      </section>
+
+      <section class="shell closing-cta">
+        <div>
+          <p class="eyebrow">Start with the queue</p>
+          <h2>Give every review a clear next step.</h2>
+        </div>
+        <button class="button button-light" type="button" data-open-auth>Open the demo queue</button>
+      </section>
+    </main>
+
+    <footer class="public-footer">
+      <div class="shell footer-inner">
+        <a class="brand" href="#top" aria-label="OpenReview home">
+          <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true">
+            <rect width="32" height="32" rx="9" fill="#0f1f1c"/>
+            <path d="m11 10-4 6 4 6M21 10l4 6-4 6" fill="none" stroke="#f4f7f5" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="m17.8 9.8 3.5 12.4" fill="none" stroke="#5eead4" stroke-width="2.4" stroke-linecap="round"/>
+          </svg>
+          <span class="brand-name">OpenReview</span>
+        </a>
+        <p>An open review queue for code that ships.</p>
+        <span class="footer-note">Demo concept · Browser-local data</span>
+      </div>
+    </footer>
+  </div>
+
+  <div id="app-view" class="app-view" hidden>
+    <aside class="app-sidebar">
+      <a class="app-brand" href="#app-overview" aria-label="OpenReview dashboard">
+        <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true">
+          <rect width="32" height="32" rx="9" fill="#0f1f1c"/>
+          <path d="m11 10-4 6 4 6M21 10l4 6-4 6" fill="none" stroke="#f4f7f5" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="m17.8 9.8 3.5 12.4" fill="none" stroke="#5eead4" stroke-width="2.4" stroke-linecap="round"/>
+        </svg>
+        <span>OpenReview</span>
+      </a>
+      <p class="sidebar-label">Review desk</p>
+      <nav class="app-nav" aria-label="Dashboard navigation">
+        <a class="app-nav-item" href="#app-overview">Inbox</a>
+        <a class="app-nav-item is-active" href="#review-queue">Queue <span class="nav-count" id="nav-count">6</span></a>
+        <a class="app-nav-item" href="#reviewed">Reviewed</a>
+        <a class="app-nav-item" href="#activity">Activity</a>
+      </nav>
+      <div class="app-side-card">
+        <span class="mini-label">Demo workspace</span>
+        <strong>Local browser data</strong>
+        <p>Reviews, decisions, and notes stay in this browser. No GitHub connection is made.</p>
+        <button class="side-link" type="button" data-show-public>View public site</button>
+        <button class="side-link" type="button" id="logout-button">Log out</button>
+        <button class="side-link" type="button" id="theme-toggle" aria-pressed="false">Switch theme</button>
+      </div>
+    </aside>
+
+    <main class="app-main" id="app-overview">
+      <header class="app-topbar">
+        <div>
+          <p class="app-kicker">Review desk</p>
+          <h1>Queue</h1>
+        </div>
+        <div class="app-topbar-actions">
+          <span class="app-user" id="app-user">Demo reviewer</span>
+          <button class="button button-secondary" type="button" data-show-public>View public site</button>
+          <div class="app-mobile-controls">
+            <button class="app-mobile-control" type="button" data-logout>Log out</button>
+            <button class="app-mobile-control" type="button" data-theme-toggle aria-pressed="false">Dark mode</button>
+          </div>
+        </div>
+      </header>
+
+      <div class="app-content">
+        <p class="app-greeting" id="dashboard-greeting">Pick a review and leave a clear decision.</p>
+
+        <section class="stat-grid" aria-label="Queue summary">
+          <article class="stat-card"><span>Open reviews</span><strong id="stat-open">6</strong><small>Across your watchlist</small></article>
+          <article class="stat-card stat-card-warn"><span>Needs your eyes</span><strong id="stat-needs">6</strong><small>No decision yet</small></article>
+          <article class="stat-card"><span>Changes requested</span><strong id="stat-changes">0</strong><small>Waiting on authors</small></article>
+          <article class="stat-card stat-card-good"><span>Approved</span><strong id="stat-approved">0</strong><small>Ready to ship</small></article>
+        </section>
+
+        <div class="desk-grid">
+          <section class="queue-panel" id="review-queue" aria-labelledby="queue-title">
+            <div class="panel-heading">
+              <div>
+                <h2 id="queue-title">Needs a reviewer</h2>
+                <p>Risk and review size decide the order.</p>
+              </div>
+              <span class="panel-count" id="result-count">6 reviews</span>
+            </div>
+
+            <div class="queue-toolbar">
+              <label class="search-box" for="review-search">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="m16 16 4 4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+                <input id="review-search" type="search" placeholder="Search title, repo, or label" autocomplete="off">
+              </label>
+              <label class="select-wrap" for="sort-select">
+                <span class="sr-only">Sort reviews</span>
+                <select id="sort-select">
+                  <option value="priority">Priority first</option>
+                  <option value="smallest">Smallest first</option>
+                  <option value="oldest">Oldest first</option>
+                </select>
+              </label>
+            </div>
+
+            <div class="filter-row" role="tablist" aria-label="Review status">
+              <button class="filter-tab is-active" type="button" role="tab" aria-selected="true" data-filter="all">All</button>
+              <button class="filter-tab" type="button" role="tab" aria-selected="false" data-filter="needs-review">Needs review</button>
+              <button class="filter-tab" type="button" role="tab" aria-selected="false" data-filter="changes-requested">Changes requested</button>
+              <button class="filter-tab" type="button" role="tab" aria-selected="false" data-filter="approved">Approved</button>
+            </div>
+
+            <div id="review-list" class="review-list"></div>
+          </section>
+
+          <aside class="desk-rail">
+            <section class="rail-card" id="activity" aria-labelledby="activity-title">
+              <div class="panel-heading panel-heading-compact">
+                <div><h2 id="activity-title">Activity</h2><p>Latest review decisions.</p></div>
+              </div>
+              <div id="recent-activity" class="activity-list"></div>
+            </section>
+            <section class="rail-card rail-card-rules" aria-labelledby="rules-title">
+              <span class="mini-label">Review rules</span>
+              <h2 id="rules-title">Leave a useful trail.</h2>
+              <ul>
+                <li>Name the risk, not just the file.</li>
+                <li>Ask one answerable question.</li>
+                <li>Make the next action obvious.</li>
+              </ul>
+            </section>
+          </aside>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <dialog class="modal" id="auth-dialog" aria-labelledby="auth-title">
+    <form class="modal-card auth-card" id="auth-form" novalidate>
+      <button class="modal-close" type="button" data-close-dialog aria-label="Close">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      </button>
+      <p class="modal-kicker">OpenReview demo</p>
+      <h2 id="auth-title">Open the review desk</h2>
+      <p class="modal-copy">Use any valid email to explore the queue. No email is sent and no GitHub account is connected.</p>
+      <label class="field-label" for="auth-email">Email address</label>
+      <input class="text-input" id="auth-email" name="email" type="email" autocomplete="email" placeholder="you@example.com" required aria-describedby="auth-error">
+      <p class="field-error" id="auth-error" role="alert"></p>
+      <button class="button button-primary button-full" type="submit" id="auth-submit">Open demo queue</button>
+      <p class="modal-footnote">Demo only. Data stays in this browser.</p>
+    </form>
+  </dialog>
+
+  <dialog class="modal modal-wide" id="review-dialog" aria-labelledby="review-dialog-title">
+    <div class="review-dialog" id="review-dialog-body"></div>
+  </dialog>
+
+  <div class="toast" id="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+  <script type="module" src="src/app.js"></script>
+</body>
+</html>

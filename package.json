@@ -1,0 +1,12 @@
+{
+  "name": "openreview",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "An open review queue for code that ships.",
+  "scripts": {
+    "start": "node server.mjs",
+    "test": "node --test",
+    "check": "node --check src/app.js && node --check src/data.js && node --check src/state.js && node --check server.mjs"
+  }
+}
