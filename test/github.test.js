@@ -106,6 +106,19 @@ test('returns an empty queue when the repository has no open pull requests', asy
   assert.deepEqual(reviews, []);
 });
 
+test('keeps the list card when a detail request fails', async () => {
+  const reviews = await fetchOpenReviews({
+    fetchImpl: async (url) => {
+      if (url.includes('/pulls?')) return response([basePr]);
+      throw new Error('detail request failed');
+    },
+  });
+
+  assert.equal(reviews.length, 1);
+  assert.equal(reviews[0].number, 12);
+  assert.equal(reviews[0].files, null);
+});
+
 test('surfaces GitHub rate limits as a typed error', async () => {
   await assert.rejects(
     () => fetchOpenReviews({
