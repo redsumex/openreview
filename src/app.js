@@ -4,6 +4,7 @@ import {
   riskLabels,
   statusLabels,
 } from './data.js';
+import { fetchOpenReviews } from './github.js';
 import {
   createInitialState,
   filterReviews,
@@ -21,6 +22,7 @@ const elements = {
   publicView: $('#public-view'),
   appView: $('#app-view'),
   reviewList: $('#review-list'),
+  queueNotice: $('#queue-notice'),
   resultCount: $('#result-count'),
   reviewSearch: $('#review-search'),
   sortSelect: $('#sort-select'),
@@ -47,6 +49,9 @@ const elements = {
 };
 
 let state = loadState();
+let queue = [...reviews];
+let queueState = 'sample';
+let queueError = '';
 let currentFilter = 'all';
 let currentSort = 'priority';
 let currentQuery = '';
@@ -73,7 +78,7 @@ function saveState() {
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
   } catch {
-    // The demo still works when storage is unavailable.
+    // The review desk still works when storage is unavailable.
   }
 }
 
@@ -153,7 +158,7 @@ function showApp() {
 }
 
 function renderStats() {
-  const summary = summarizeReviews(reviews, state.decisions);
+  const summary = summarizeReviews(queue, state.decisions);
   elements.statOpen.textContent = String(summary.open);
   elements.statNeeds.textContent = String(summary.needsReview);
   elements.statChanges.textContent = String(summary.changesRequested);
@@ -163,7 +168,7 @@ function renderStats() {
 
 function renderSession() {
   const isSignedIn = Boolean(state.user);
-  elements.appUser.textContent = state.user?.email || 'Demo reviewer';
+  elements.appUser.textContent = state.user?.email || 'Reviewer';
   elements.dashboardGreeting.textContent = state.user
     ? `Signed in as ${state.user.email}. Review decisions stay in this browser only.`
     : 'Pick a review and leave a clear decision.';
@@ -174,7 +179,7 @@ function renderSession() {
     } else if (button.classList.contains('text-button')) {
       button.textContent = 'Log in';
     } else {
-      button.textContent = button.classList.contains('button-light') ? 'Open the demo queue' : 'Open demo queue';
+      button.textContent = button.classList.contains('button-light') ? 'Open the review queue' : 'Open review queue';
     }
     if (isSignedIn && button.classList.contains('text-button')) button.hidden = true;
   }
@@ -188,7 +193,8 @@ function renderReviewCard(review) {
   const status = statusFor(review, state.decisions);
   const label = riskLabels[review.risk] || review.risk;
   return `
-    <button class="review-card" type="button" data-review-id="${review.id}" aria-label="Open review ${escapeHtml(review.repo)} #${review.number}: ${escapeHtml(review.title)}">
+    <div class="review-card" data-review-id="${review.id}">
+    <button class="review-card-main" type="button" aria-label="Open review ${escapeHtml(review.repo)} #${review.number}: ${escapeHtml(review.title)}">
       <span class="review-card-top">
         <span class="repo-name">${escapeHtml(review.repo)}</span>
         <span class="pr-number">#${review.number}</span>
@@ -198,47 +204,87 @@ function renderReviewCard(review) {
       <span class="review-title">${escapeHtml(review.title)}</span>
       <span class="review-card-summary">${escapeHtml(review.summary)}</span>
       <span class="review-card-meta">
-        <span>${review.files} files</span>
-        <span>+${review.additions}</span>
-        <span>-${review.deletions}</span>
+        <span>${review.files ?? '—'} files</span>
+        <span>+${review.additions ?? '—'}</span>
+        <span>-${review.deletions ?? '—'}</span>
         <span>${review.age} ago</span>
       </span>
       <span class="review-card-bottom">
         <span class="author"><span class="avatar">${escapeHtml(review.initials)}</span>${escapeHtml(review.author)}</span>
         <span class="checks checks-${review.checks}">${review.checks}</span>
       </span>
-    </button>`;
+    </button>
+    ${review.url ? `<a class="card-github-link" data-github-link href="${escapeHtml(review.url)}" target="_blank" rel="noreferrer">View on GitHub <span aria-hidden="true">↗</span></a>` : ''}
+    </div>`;
 }
 
 function renderQueue() {
-  const filtered = filterReviews(reviews, {
+  const filtered = filterReviews(queue, {
     query: currentQuery,
     status: currentFilter,
     sort: currentSort,
     decisions: state.decisions,
   });
   elements.resultCount.textContent = `${filtered.length} review${filtered.length === 1 ? '' : 's'}`;
+  renderQueueNotice();
   if (!filtered.length) {
+    const liveAndEmpty = queueState === 'live' && queue.length === 0;
     elements.reviewList.innerHTML = `
       <div class="empty-state">
-        <strong>No reviews match that view.</strong>
-        <p>Try another status or clear the search.</p>
+        <strong>${liveAndEmpty ? 'The queue is clear.' : 'No reviews match that view.'}</strong>
+        <p>${liveAndEmpty ? 'There are no open pull requests in redsumex/openreview.' : 'Try another status or clear the search.'}</p>
       </div>`;
     return;
   }
   elements.reviewList.innerHTML = filtered.map(renderReviewCard).join('');
 }
 
+function renderQueueNotice() {
+  if (!elements.queueNotice) return;
+  if (queueState === 'loading') {
+    elements.queueNotice.hidden = false;
+    elements.queueNotice.className = 'queue-notice';
+    elements.queueNotice.innerHTML = '<span>Loading open pull requests from GitHub...</span>';
+    return;
+  }
+  if (queueState === 'fallback') {
+    elements.queueNotice.hidden = false;
+    elements.queueNotice.className = 'queue-notice queue-notice-warn';
+    elements.queueNotice.innerHTML = `
+      <span><strong>Live data unavailable.</strong> Showing the sample queue.${queueError ? ` ${escapeHtml(queueError)}` : ''}</span>
+      <button class="notice-action" type="button" data-retry-queue>Retry</button>`;
+    return;
+  }
+  if (queueState === 'live') {
+    elements.queueNotice.hidden = false;
+    elements.queueNotice.className = 'queue-notice queue-notice-live';
+    elements.queueNotice.innerHTML = `
+      <span><strong>Live from GitHub.</strong> ${queue.length} open pull request${queue.length === 1 ? '' : 's'} in
+        <a href="https://github.com/redsumex/openreview/pulls" target="_blank" rel="noreferrer">redsumex/openreview</a>.</span>`;
+    return;
+  }
+  elements.queueNotice.hidden = true;
+  elements.queueNotice.innerHTML = '';
+}
+
 function renderActivity() {
   const items = state.activity.length ? state.activity.map((item) => {
-    const review = reviews.find((entry) => entry.id === item.reviewId);
+    const review = queue.find((entry) => entry.id === item.reviewId);
     return {
       type: item.type,
       actor: state.user?.email?.split('@')[0] || 'you',
       target: review ? `${review.repo}#${review.number}` : 'a review',
       time: item.at,
     };
-  }) : activitySeed;
+  }) : queueState === 'live' ? [] : activitySeed;
+  if (!items.length) {
+    elements.activityList.innerHTML = `
+      <div class="activity-empty">
+        <strong>No decisions yet.</strong>
+        <p>Review a pull request to start the trail.</p>
+      </div>`;
+    return;
+  }
   elements.activityList.innerHTML = items.map((item) => `
     <div class="activity-item">
       <span class="activity-icon ${escapeHtml(item.type)}"></span>
@@ -262,11 +308,14 @@ function render() {
 }
 
 function openReview(reviewId) {
-  const review = reviews.find((item) => item.id === reviewId);
+  const review = queue.find((item) => item.id === reviewId);
   if (!review) return;
   const status = statusFor(review, state.decisions);
   const decision = state.decisions[review.id];
   const note = decision?.note || '';
+  const findings = review.findings?.length
+    ? review.findings
+    : ['No automated findings. Inspect the linked pull request before deciding.'];
   elements.reviewDialogBody.dataset.reviewId = review.id;
   elements.reviewDialogBody.innerHTML = `
     <div class="dialog-head">
@@ -275,19 +324,20 @@ function openReview(reviewId) {
       </button>
       <p class="modal-kicker">Review request</p>
       <h2 id="review-dialog-title">${escapeHtml(review.title)}</h2>
-      <p class="dialog-meta">${escapeHtml(review.repo)} #${review.number} · ${escapeHtml(review.author)} · ${escapeHtml(review.branch)}</p>
+      <p class="dialog-meta">${escapeHtml(review.repo)} #${review.number} | ${escapeHtml(review.author)} | ${escapeHtml(review.branch)}</p>
     </div>
     <div class="dialog-body">
       <div>
         <h3>What changed</h3>
         <p>${escapeHtml(review.summary)}</p>
         <h3>Questions before a decision</h3>
-        <ul class="finding-list">${review.findings.map((finding) => `<li>${escapeHtml(finding)}</li>`).join('')}</ul>
+        <ul class="finding-list">${findings.map((finding) => `<li>${escapeHtml(finding)}</li>`).join('')}</ul>
       </div>
       <aside class="dialog-side">
+        ${review.url ? `<a class="github-link" href="${escapeHtml(review.url)}" target="_blank" rel="noreferrer">Open pull request on GitHub <span aria-hidden="true">↗</span></a>` : ''}
         <div class="side-fact"><span>Risk</span><strong>${riskLabels[review.risk]}</strong></div>
-        <div class="side-fact"><span>Scope</span><strong>${review.files} files · +${review.additions} / -${review.deletions}</strong></div>
-        <div class="side-fact"><span>Checks</span><strong>${review.checks} · ${review.coverage} coverage</strong></div>
+        <div class="side-fact"><span>Scope</span><strong>${review.files ?? '-'} files | +${review.additions ?? '-'} / -${review.deletions ?? '-'}</strong></div>
+        <div class="side-fact"><span>Checks</span><strong>${review.checks} | ${review.coverage} coverage</strong></div>
         <div class="side-fact"><span>Current status</span><strong>${statusLabels[status] || status}</strong></div>
         <label class="dialog-note-label" for="review-note">Review note</label>
         <textarea class="dialog-note" id="review-note" placeholder="Name the risk and the next action.">${escapeHtml(note)}</textarea>
@@ -299,6 +349,22 @@ function openReview(reviewId) {
       <button class="button button-primary" type="button" data-decision="approved">Approve</button>
     </div>`;
   openDialog(elements.reviewDialog);
+}
+
+async function loadQueue() {
+  queueState = 'loading';
+  queueError = '';
+  renderQueue();
+  try {
+    const liveReviews = await fetchOpenReviews();
+    queue = liveReviews;
+    queueState = 'live';
+  } catch (error) {
+    queue = [...reviews];
+    queueState = 'fallback';
+    queueError = error?.message || 'GitHub request failed.';
+  }
+  render();
 }
 
 function handleDecision(decision) {
@@ -332,11 +398,11 @@ function handleAuthSubmit(event) {
     state = { ...state, user: { email } };
     saveState();
     elements.authSubmit.disabled = false;
-    elements.authSubmit.textContent = 'Open demo queue';
+    elements.authSubmit.textContent = 'Open review queue';
     closeDialog(elements.authDialog);
     render();
     showApp();
-    showToast('Demo reviewer session started.');
+    showToast('Reviewer session started.');
   }, 300);
 }
 
@@ -383,7 +449,10 @@ function initialize() {
   }
   elements.reviewList.addEventListener('click', (event) => {
     const card = event.target.closest('[data-review-id]');
-    if (card) openReview(card.dataset.reviewId);
+    if (card && !event.target.closest('[data-github-link]')) openReview(card.dataset.reviewId);
+  });
+  elements.queueNotice.addEventListener('click', (event) => {
+    if (event.target.closest('[data-retry-queue]')) loadQueue();
   });
   elements.reviewDialogBody.addEventListener('click', (event) => {
     if (event.target.closest('[data-close-dialog]')) closeDialog(elements.reviewDialog);
@@ -414,7 +483,7 @@ function initialize() {
     saveState();
     render();
     showPublic();
-    showToast('Logged out of the demo reviewer.');
+    showToast('Logged out.');
   });
   for (const button of $$('[data-logout]')) {
     button.addEventListener('click', () => {
@@ -422,7 +491,7 @@ function initialize() {
       saveState();
       render();
       showPublic();
-      showToast('Logged out of the demo reviewer.');
+      showToast('Logged out.');
     });
   }
   elements.menuToggle.addEventListener('click', () => {
@@ -438,6 +507,7 @@ function initialize() {
     });
   }
   if (state.user) showApp();
+  loadQueue();
 }
 
 initialize();

@@ -2,7 +2,7 @@
 
 OpenReview is a working front-end concept for an open code-review desk. It gives a review queue a clear shape: every request carries its risk, scope, CI state, open questions, and a visible decision.
 
-The public surface is a landing page for the review model. The demo queue is a separate signed-in workspace with filtering, priority sorting, review detail, notes, and approve / request-changes / comment actions.
+The public surface is a landing page for the review model. The review queue is a separate signed-in workspace with filtering, priority sorting, review detail, notes, and approve / request-changes / comment actions.
 
 ## Run it
 
@@ -18,8 +18,9 @@ No dependencies are required. The site is plain HTML, CSS, and ES modules, serve
 ## What works
 
 - Responsive public landing page and separate review desk.
-- Demo reviewer sign-in with browser-local persistence.
-- Review queue with risk, scope, CI state, labels, and age.
+- Reviewer sign-in with browser-local persistence.
+- Live queue backed by public GitHub pull requests, with sample data as a fallback.
+- Risk, scope, labels, and age derived from the pull request.
 - Search, status filters, and priority / size / age sorting.
 - Review detail dialog with evidence, open questions, and a note field.
 - Approve, request changes, and comment-only decisions.
@@ -35,10 +36,12 @@ No dependencies are required. The site is plain HTML, CSS, and ES modules, serve
 | `index.html` | Public landing page, app shell, and dialogs |
 | `styles.css` | Design tokens, layouts, components, and responsive rules |
 | `src/data.js` | Sample review requests, labels, and activity |
+| `src/github.js` | Read-only GitHub pull request adapter and queue mapping |
 | `src/state.js` | Pure filters, status calculations, and review decisions |
-| `src/app.js` | Rendering, dialogs, auth demo, filters, and theme behavior |
+| `src/app.js` | Rendering, dialogs, local auth, filters, and theme behavior |
 | `server.mjs` | Zero-dependency static server on port `4174` |
 | `test/state.test.js` | Unit tests for filtering, sorting, and decisions |
+| `test/github.test.js` | Adapter mapping, request budget, empty, and rate-limit tests |
 | `test/ui-contract.test.js` | Mark, queue, and dialog contract checks |
 | `test/site.test.js` | Static server and asset smoke test |
 
@@ -63,9 +66,12 @@ The workflow currently validates source syntax and tests. It does not rewrite fi
 
 ## Important limits
 
-This is a front-end demo, not a production review service.
+This is a front-end review desk, not a production review service.
 
-- There is no GitHub OAuth, API connection, database, background worker, or email delivery.
+- There is no GitHub OAuth, write API, database, background worker, or email delivery.
+- The queue reads public pull requests from `redsumex/openreview` without a token.
+- The GitHub REST API allows 60 unauthenticated requests per hour per IP. The adapter uses one list request plus up to eight detail requests per load.
+- If GitHub is unavailable or rate-limited, the app keeps the sample queue visible and shows a retry action.
 - Reviews, notes, and decisions persist only in this browser's `localStorage`.
 - The sample repositories and review requests are fictional demo data.
 - The action buttons update the local queue; they do not write to GitHub.

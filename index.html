@@ -29,7 +29,7 @@
 
         <div class="public-actions">
           <button class="text-button" type="button" data-open-auth>Log in</button>
-          <button class="button button-dark" type="button" data-open-auth>Open demo queue</button>
+          <button class="button button-dark" type="button" data-open-auth>Open review queue</button>
           <button class="icon-button public-menu-toggle" type="button" id="public-menu-toggle" aria-label="Open menu" aria-controls="public-nav" aria-expanded="false">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
           </button>
@@ -47,7 +47,7 @@
             <button class="button button-primary" type="button" data-open-auth>Open the review queue <span aria-hidden="true">-></span></button>
             <a class="button button-quiet" href="#how-it-works">See how it works</a>
           </div>
-          <div class="hero-proof" aria-label="Demo queue summary">
+          <div class="hero-proof" aria-label="Sample queue summary">
             <div><strong>06</strong><span>open reviews</span></div>
             <div><strong>2m</strong><span>median triage</span></div>
             <div><strong>100%</strong><span>decision coverage</span></div>
@@ -60,7 +60,7 @@
               <span class="preview-kicker">Review queue</span>
               <strong>Needs your eyes</strong>
             </div>
-            <span class="live-pill"><span></span> Live demo</span>
+            <span class="live-pill"><span></span> Sample preview</span>
           </div>
           <div class="preview-row preview-row-high">
             <span class="risk-dot"></span>
@@ -140,7 +140,7 @@
             <p class="eyebrow">Queue shape</p>
             <h2>Every request carries its own evidence.</h2>
             <p>Risk, size, checks, and reviewer questions are visible before the first click. The queue is designed for decisions, not for collecting tabs.</p>
-            <button class="button button-primary" type="button" data-open-auth>Explore the demo queue</button>
+            <button class="button button-primary" type="button" data-open-auth>Explore the review queue</button>
           </div>
           <div class="evidence-card">
             <div class="evidence-head"><span>Review snapshot</span><span class="evidence-id">#208</span></div>
@@ -174,7 +174,7 @@
           <p class="eyebrow">Start with the queue</p>
           <h2>Give every review a clear next step.</h2>
         </div>
-        <button class="button button-light" type="button" data-open-auth>Open the demo queue</button>
+        <button class="button button-light" type="button" data-open-auth>Open the review queue</button>
       </section>
     </main>
 
@@ -189,7 +189,7 @@
           <span class="brand-name">OpenReview</span>
         </a>
         <p>An open review queue for code that ships.</p>
-        <span class="footer-note">Demo concept · Browser-local data</span>
+        <span class="footer-note">Public GitHub reads | Browser-local decisions</span>
       </div>
     </footer>
   </div>
@@ -212,9 +212,9 @@
         <a class="app-nav-item" href="#activity">Activity</a>
       </nav>
       <div class="app-side-card">
-        <span class="mini-label">Demo workspace</span>
-        <strong>Local browser data</strong>
-        <p>Reviews, decisions, and notes stay in this browser. No GitHub connection is made.</p>
+        <span class="mini-label">Review workspace</span>
+        <strong>Public reads, local decisions</strong>
+        <p>Pull requests are read publicly from GitHub. Decisions and notes stay in this browser.</p>
         <button class="side-link" type="button" data-show-public>View public site</button>
         <button class="side-link" type="button" id="logout-button">Log out</button>
         <button class="side-link" type="button" id="theme-toggle" aria-pressed="false">Switch theme</button>
@@ -228,7 +228,7 @@
           <h1>Queue</h1>
         </div>
         <div class="app-topbar-actions">
-          <span class="app-user" id="app-user">Demo reviewer</span>
+          <span class="app-user" id="app-user">Reviewer</span>
           <button class="button button-secondary" type="button" data-show-public>View public site</button>
           <div class="app-mobile-controls">
             <button class="app-mobile-control" type="button" data-logout>Log out</button>
@@ -279,6 +279,7 @@
               <button class="filter-tab" type="button" role="tab" aria-selected="false" data-filter="approved">Approved</button>
             </div>
 
+            <div id="queue-notice" class="queue-notice" hidden></div>
             <div id="review-list" class="review-list"></div>
           </section>
 
@@ -309,14 +310,14 @@
       <button class="modal-close" type="button" data-close-dialog aria-label="Close">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
       </button>
-      <p class="modal-kicker">OpenReview demo</p>
+      <p class="modal-kicker">OpenReview</p>
       <h2 id="auth-title">Open the review desk</h2>
-      <p class="modal-copy">Use any valid email to explore the queue. No email is sent and no GitHub account is connected.</p>
+      <p class="modal-copy">Use any valid email to explore the queue. No email is sent. Pull requests are read publicly from GitHub; review decisions stay in this browser.</p>
       <label class="field-label" for="auth-email">Email address</label>
       <input class="text-input" id="auth-email" name="email" type="email" autocomplete="email" placeholder="you@example.com" required aria-describedby="auth-error">
       <p class="field-error" id="auth-error" role="alert"></p>
-      <button class="button button-primary button-full" type="submit" id="auth-submit">Open demo queue</button>
-      <p class="modal-footnote">Demo only. Data stays in this browser.</p>
+      <button class="button button-primary button-full" type="submit" id="auth-submit">Open review queue</button>
+      <p class="modal-footnote">Public GitHub reads. Decisions stay in this browser.</p>
     </form>
   </dialog>
 

@@ -22,6 +22,9 @@ test('renders a review queue with a detail dialog and three decisions', () => {
   assert.match(app, /function openReview/);
   assert.match(app, /function handleDecision/);
   assert.match(app, /reviewDialogBody\.dataset\.reviewId = review\.id/);
+  assert.match(app, /fetchOpenReviews/);
+  assert.match(app, /queue-notice/);
+  assert.match(app, /data-github-link/);
 });
 
 test('keeps the public and app surfaces separate', () => {

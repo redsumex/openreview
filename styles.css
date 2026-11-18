@@ -174,7 +174,8 @@ p {
 .text-button:focus-visible,
 .icon-button:focus-visible,
 .side-link:focus-visible,
-.review-card:focus-visible {
+.review-card-main:focus-visible,
+.card-github-link:focus-visible {
   outline: 3px solid var(--mint);
   outline-offset: 3px;
 }
@@ -1249,19 +1250,66 @@ p {
   content: "";
 }
 
+.queue-notice {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 12px 14px 0;
+  padding: 9px 11px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface-soft);
+  color: var(--muted);
+  font-size: 10px;
+  line-height: 1.5;
+}
+
+.queue-notice strong {
+  color: var(--ink-soft);
+}
+
+.queue-notice a {
+  color: var(--green);
+  font-weight: 700;
+}
+
+.queue-notice-live {
+  border-color: color-mix(in srgb, var(--positive) 26%, var(--border));
+  background: var(--positive-soft);
+}
+
+.queue-notice-warn {
+  border-color: color-mix(in srgb, var(--amber) 34%, var(--border));
+  background: var(--amber-soft);
+}
+
+.notice-action {
+  flex: 0 0 auto;
+  padding: 4px 8px;
+  border: 1px solid currentColor;
+  border-radius: 99px;
+  background: transparent;
+  color: var(--rose);
+  font-family: var(--font-mono);
+  font-size: 8px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.notice-action:hover {
+  background: var(--surface);
+}
+
 .review-list {
   padding: 4px 14px 14px;
 }
 
 .review-card {
-  display: block;
-  width: 100%;
-  padding: 14px 4px;
-  border: 0;
   border-bottom: 1px solid var(--border);
   background: transparent;
   color: inherit;
-  text-align: left;
 }
 
 .review-card:last-child {
@@ -1270,6 +1318,35 @@ p {
 
 .review-card:hover {
   background: var(--surface-soft);
+}
+
+.review-card-main {
+  display: block;
+  width: 100%;
+  padding: 14px 4px 8px;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.card-github-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin: 0 4px 11px;
+  color: var(--green);
+  font-family: var(--font-mono);
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-decoration: none;
+}
+
+.card-github-link:hover {
+  text-decoration: underline;
 }
 
 .review-card-top,
@@ -1433,6 +1510,14 @@ p {
   background: var(--amber);
 }
 
+.checks-unknown {
+  color: var(--muted-soft);
+}
+
+.checks-unknown::before {
+  background: var(--muted-soft);
+}
+
 .empty-state {
   padding: 38px 18px;
   text-align: center;
@@ -1511,6 +1596,22 @@ p {
   color: var(--muted-soft);
   font-family: var(--font-mono);
   font-size: 8px;
+}
+
+.activity-empty {
+  padding: 8px 0 16px;
+}
+
+.activity-empty strong {
+  display: block;
+  color: var(--ink-soft);
+  font-size: 10px;
+}
+
+.activity-empty p {
+  margin: 3px 0 0;
+  color: var(--muted);
+  font-size: 9px;
 }
 
 .rail-card-rules {
@@ -1750,6 +1851,22 @@ p {
   display: grid;
   align-content: start;
   gap: 12px;
+}
+
+.github-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  width: fit-content;
+  color: var(--green);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.github-link:hover {
+  text-decoration: underline;
 }
 
 .side-fact {
