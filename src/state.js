@@ -1,3 +1,4 @@
+// Hermes fallback smoke test.
 export const STORAGE_KEY = 'openreview-demo-v1';
 
 export function createInitialState() {
