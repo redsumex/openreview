@@ -67,3 +67,7 @@ CI runs `npm run check` and `npm test` on pushes to `main` and pull requests. Gi
 ## License
 
 MIT. See [LICENSE](LICENSE).
+
+## Contributing
+
+Changes to `main` must go through a pull request. See [CONTRIBUTING.md](CONTRIBUTING.md) for the workflow.
