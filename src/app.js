@@ -228,10 +228,11 @@ function renderQueue() {
   elements.resultCount.textContent = `${filtered.length} review${filtered.length === 1 ? '' : 's'}`;
   renderQueueNotice();
   if (!filtered.length) {
+    const liveAndEmpty = queueState === 'live' && queue.length === 0;
     elements.reviewList.innerHTML = `
       <div class="empty-state">
-        <strong>${queueState === 'live' ? 'The queue is clear.' : 'No reviews match that view.'}</strong>
-        <p>${queueState === 'live' ? 'There are no open pull requests in redsumex/openreview.' : 'Try another status or clear the search.'}</p>
+        <strong>${liveAndEmpty ? 'The queue is clear.' : 'No reviews match that view.'}</strong>
+        <p>${liveAndEmpty ? 'There are no open pull requests in redsumex/openreview.' : 'Try another status or clear the search.'}</p>
       </div>`;
     return;
   }
