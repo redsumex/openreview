@@ -58,9 +58,11 @@ This is a front-end demo, not a production review service.
 - The sample repositories and review requests are fictional demo data.
 - The action buttons update the local queue; they do not write to GitHub.
 
-## Publishing
+## Published repository
 
-The intended GitHub Pages URL is `https://redsumex.github.io/openreview/`. CI runs `npm run check` and `npm test` on pushes to `main` and pull requests.
+The app is live at [redsumex.github.io/openreview](https://redsumex.github.io/openreview/) from the `main` branch. The source is in [redsumex/openreview](https://github.com/redsumex/openreview).
+
+CI runs `npm run check` and `npm test` on pushes to `main` and pull requests. GitHub Pages builds from the repository root.
 
 ## License
 
